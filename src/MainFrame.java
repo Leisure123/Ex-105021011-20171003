@@ -4,29 +4,42 @@ import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame{
     private Container cp;
-    private JButton btnAdd = new JButton("Add");
-    private JButton btnSub = new JButton("Substract");
-    private JButton btnMul = new JButton("Multiplication");
-    private JButton btnDiv = new JButton("Division");
+    private JButton btnEx = new JButton("範本");
+    private JButton btnDc = new JButton("加密");
+    private JButton btnClear = new JButton("清除");
     private JButton btnExit = new JButton("Exit");
-    private JLabel lab = new JLabel("0");
-    private int count =  0;
+    private JLabel lab = new JLabel("Key");
+    private JTextArea taL = new JTextArea();
+    private JTextArea taR = new JTextArea();
+    private JScrollPane spL = new JScrollPane(taL);
+    private JScrollPane spR = new JScrollPane(taR);
+    private JPanel pan = new JPanel();
+    private JTextField tfd = new JTextField("3");
 
     public MainFrame(){
         initComp();
     }
     private void initComp(){
-        this.setBounds(100,100,400,450);
+        this.setBounds(100,100,500,450);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        this.setTitle("加密到你媽都認不出來");
+        this.setTitle("加密得休");
         cp = this.getContentPane();
-        cp.setLayout(new GridLayout(3,2,3,3));
-        cp.add(lab);
-        lab.setHorizontalAlignment(JLabel.CENTER);
-        cp.add(btnExit);
-        cp.add(btnAdd);
-        cp.add(btnSub);
-        cp.add(btnMul);
-        cp.add(btnDiv);
+        cp.setLayout(new BorderLayout(3,3));
+        taL.setPreferredSize(new Dimension(200,500));
+        taR.setPreferredSize(new Dimension(200,500));
+        taL.setLineWrap(true);
+        taR.setLineWrap(true);
+        pan.setLayout(new GridLayout(6,1,3,3));
+        pan.add(btnEx);
+        pan.add(btnDc);
+        pan.add(lab);
+        pan.add(tfd);
+        pan.add(btnClear);
+        pan.add(btnExit);
+        cp.add(pan,BorderLayout.CENTER);
+        cp.add(spL,BorderLayout.WEST);
+        cp.add(spR,BorderLayout.EAST);
 
         btnExit.addActionListener(new AbstractAction() {
             @Override
@@ -35,35 +48,33 @@ public class MainFrame extends JFrame{
             }
         });
 
-        btnAdd.addActionListener(new AbstractAction() {
+        btnEx.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                count++;
-                lab.setText(Integer.toString(count));
+                taL.setText("Later that day, when the Princess was sitting at the table" +
+                        ", something was heard coming up the marble stairs. Splish, splosh," +
+                        " splish splosh! The sound came nearer and nearer, and a voice cried, " +
+                        "Let me in, youngest daughter of the King.");
             }
         });
 
-        btnSub.addActionListener(new AbstractAction() {
+        btnDc.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                count--;
-                lab.setText(Integer.toString(count));
+                char data[] = taL.getText().toCharArray();
+                int len = data.length , key = Integer.parseInt(tfd.getText());
+                for(int i = 0; i < len; i++){
+                    data[i] +=key;
+                }
+                taR.setText(new String(data));
             }
         });
 
-        btnMul.addActionListener(new AbstractAction() {
+        btnClear.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                count *= 2;
-                lab.setText(Integer.toString(count));
-            }
-        });
-
-        btnDiv.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                count/=2;
-                lab.setText(Integer.toString(count));
+                taL.setText("");
+                taR.setText("");
             }
         });
 
